@@ -4,10 +4,10 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 
-require_once 'config.php';
+require_once 'config.inc.php';
 
 if(!isset($config) || empty($config)){
-    die("<h1>Configuration error</h1><p>Copy the webdata/config.sample.php file to webdata/config.php and fill out your connection settings.</p>");
+    die("<h1>Configuration error</h1><p>Copy the webdata/config.inc.sample.php file to webdata/config.inc.php and fill out your connection settings.</p>");
 }
 
 $projectRoot = $config["general"]["projectRoot"];
