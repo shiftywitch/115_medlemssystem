@@ -16,7 +16,7 @@ CREATE OR REPLACE TABLE Bruker (
 
 
 if(isset($_POST['brukerDatabase'])){
-    require 'init.php';
+    require 'init.inc.php';
     $db = database();
 
     $query = $db->query($loginSQL);
