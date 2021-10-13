@@ -131,8 +131,9 @@ function dbSetupSQL():array {
                                          
         ";
 
+    $password = password_hash('password', PASSWORD_DEFAULT);
     $queries['insertBruker'] = "
-        INSERT INTO Bruker VALUES (NULL, 'johbirk00@gmail.com', {password_hash('password')}, '', '')
+        INSERT INTO Bruker VALUES (NULL, 'johbirk00@gmail.com', '$password', '', '')
     ";
     return $queries;
 }
