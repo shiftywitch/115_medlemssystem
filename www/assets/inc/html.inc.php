@@ -1,5 +1,5 @@
 <?php
-    function htmlHeader(string $title='title') {
+    function htmlHeader(string $title='title', string $stylesheet='') {
         echo "<!DOCTYPE html>\n";
         echo "<html lang='en'>\n";
         echo "<head>\n";
@@ -8,6 +8,7 @@
         echo "\t<meta name='viewport' content='width=device-width, initial-scale=1.0'>\n";
         echo "\t<title>$title</title>\n";
 
+        echo $stylesheet;
         echo "\t<link rel='stylesheet' href='/www/css/bootstrap.min.css' type='text/css' />\n";
         echo "\t<link rel='stylesheet' href='/www/css/index.css' type='text/css' />\n";
 
