@@ -4,27 +4,26 @@ $err = array();
 $msg = array();
 
 
-$loginSQL = "
-CREATE OR REPLACE TABLE Bruker (
-    `brukerId` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `epost` VARCHAR(220) NOT NULL UNIQUE,
-    `passord` VARCHAR(220) NOT NULL,
-    `registrert` DATE NOT NULL DEFAULT(CURRENT_DATE),
-    `ckey` VARCHAR(220),
-    `ctime` VARCHAR(220)
-);";
+require_once "../inc/dbSQL.inc.php";
+require_once '../inc/config.inc.php';
 
+global $config;
 
 if(isset($_POST['brukerDatabase'])){
-    require 'init.inc.php';
+    require '../inc/init.inc.php';
     $db = database();
 
-    $query = $db->query($loginSQL);
-    if($temp = $db->error){
-        $err[] = "Database error:<br>".$temp;
-    }
-    else {
-        $msg[] = "Bruker-tabellen er satt opp.";
+    $db->query("DROP DATABASE IF EXISTS {$config["db"]["database"]};");
+    $db->query("CREATE DATABASE {$config["db"]["database"]};");
+    $db->query("USE {$config["db"]["database"]};");
+
+    foreach (dbSetupSQL() as $table => $query) {
+        $db->query($query);
+        if ($temp = $db->error) {
+            $err[] = "Database error: " . $temp;
+        } else {
+            $msg[] = "$table query fullførte";
+        }
     }
 }
 
