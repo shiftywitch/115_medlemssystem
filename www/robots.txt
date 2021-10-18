@@ -1,0 +1,4 @@
+# Standard fil som oppfordrer nettsiden til ikke å bli crawlet av nettlesere og lignende.
+
+User-agent: *
+Disallow: /
