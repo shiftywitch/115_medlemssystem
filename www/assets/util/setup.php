@@ -4,7 +4,7 @@ $err = array();
 $msg = array();
 
 
-require_once "../inc/dbSQL.inc.php";
+require_once "../inc/dbSql.inc.php";
 require_once '../inc/config.inc.php';
 
 global $config;

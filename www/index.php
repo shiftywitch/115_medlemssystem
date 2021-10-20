@@ -1,10 +1,25 @@
 <?php
-    include_once 'assets/inc/html.inc.php';
+require_once "assets/inc/html.inc.php";
+require_once "assets/inc/functions.inc.php";
+require_once "assets/inc/init.inc.php";
+
+if (!isLoggedIn()) {
+    header("location: login.php?error=notLoggedIn");
+    exit();
+} else {
+    if (isset($_POST['submit'])) {
+        logOutBruker();
+        header("location: login.php");
+    }
     htmlHeader("Frontpage");
 ?>
 
-    <p>Hjemmeside</p>
+    <h1>Velkommen tilbake <?php echo $_SESSION['brukerEpost']; ?></h1>
+    <br />
+    <br />
+    <form method="post"><button type="submit" name="submit">Logg ut!</button></form>
 
 <?php
     htmlFooter();
+}
 ?>
