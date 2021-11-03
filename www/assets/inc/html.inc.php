@@ -1,5 +1,5 @@
 <?php
-    function htmlHeader(string $title='title', string $stylesheet='') {
+    function htmlHeader(string $title='title', string $style = '', string $stylesheet='') {
         echo "<!DOCTYPE html>\n";
         echo "<html lang='en'>\n";
         echo "<head>\n";
@@ -11,6 +11,7 @@
         echo $stylesheet;
         echo "\t<link rel='stylesheet' href='/www/css/bootstrap.min.css' type='text/css' />\n";
         echo "\t<link rel='stylesheet' href='/www/css/index.css' type='text/css' />\n";
+        echo "\t<style>$style</style>";
 
         echo "\t<script src='/www/js/jquery-3.5.1.min.js'></script>\n";
         echo "\t<script src='/www/js/bootstrap.min.js'></script>\n";
