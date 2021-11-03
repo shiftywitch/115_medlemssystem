@@ -65,6 +65,23 @@ function dbSetupSQL():array {
             );
     ";
 
+    $queries['createRolleTable'] = "
+            CREATE OR REPLACE TABLE Rolle (
+                rolleId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                rolleNavn VARCHAR(50) NOT NULL UNIQUE
+            )
+    ";
+
+    $queries['createRolleRegisterTable'] = "
+            CREATE OR REPLACE TABLE Rolle_register (
+                medlemId INT NOT NULL,
+                rolleId INT NOT NULL,
+                FOREIGN KEY (medlemId) REFERENCES Medlem(medlemId),
+                FOREIGN KEY (rolleId) REFERENCES Rolle(rolleId),
+                PRIMARY KEY (medlemId, rolleId)
+            )
+    ";
+
     $queries['insertPostnummerData'] = "
             INSERT INTO Postnummer VALUES (4462, 'Hovsherad'),
                                           (4614, 'Kristiansand'); 
@@ -134,6 +151,17 @@ function dbSetupSQL():array {
     $password = password_hash('password', PASSWORD_DEFAULT);
     $queries['insertBruker'] = "
         INSERT INTO Bruker VALUES (NULL, 'johbirk00@gmail.com', '$password', '', '')
+    ";
+
+    $queries['insertRoller'] = "
+        INSERT INTO Rolle VALUES (NULL, 'LEDER'),
+                                 (NULL, 'KURSANSVARLIG');
+    ";
+
+    $queries['insertRolleRegister'] = "
+        INSERT INTO Rolle_register VALUES (1, 1),
+                                          (1, 2),
+                                          (2, 2);
     ";
     return $queries;
 }
