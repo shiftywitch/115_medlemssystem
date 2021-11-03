@@ -95,7 +95,7 @@ function dbSetupSQL():array {
         ";
 
     $queries['insertMedlemData'] = "
-            INSERT INTO MEDLEM
+            INSERT INTO Medlem
                 VALUES(
                     NULL,
                     'Johannes',
@@ -133,7 +133,7 @@ function dbSetupSQL():array {
         ";
 
     $queries['insertInteresseRegister'] = "
-            INSERT INTO interesse_Register VALUES (1, 1),
+            INSERT INTO Interesse_register VALUES (1, 1),
                                                  (1, 2),
                                                  (2, 1),
                                                  (2, 3),

@@ -26,6 +26,9 @@ if(isset($_POST['brukerDatabase'])){
         }
     }
 }
+elseif(isset($_POST['goProject'])){
+    header("Location: /");
+}
 
 ?><!DOCTYPE html>
 <html lang="no">
