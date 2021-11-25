@@ -1,7 +1,7 @@
 <?php
     function htmlHeader(string $title='title', string $style = '', string $stylesheet='') {
         echo "<!DOCTYPE html>\n";
-        echo "<html lang='en'>\n";
+        echo "<html lang='no'>\n";
         echo "<head>\n";
         echo "\t<meta charset='UTF-8'>\n";
         echo "\t<meta http-equiv='X-UA-Compatible' content='IE=edge'>\n";
@@ -9,12 +9,8 @@
         echo "\t<title>$title</title>\n";
 
         echo $stylesheet;
-        echo "\t<link rel='stylesheet' href='/www/css/bootstrap.min.css' type='text/css' />\n";
-        echo "\t<link rel='stylesheet' href='/www/css/index.css' type='text/css' />\n";
         echo "\t<style>$style</style>";
 
-        echo "\t<script src='/www/js/jquery-3.5.1.min.js'></script>\n";
-        echo "\t<script src='/www/js/bootstrap.min.js'></script>\n";
         echo "</head>\n";
         echo "<body>\n";
     }

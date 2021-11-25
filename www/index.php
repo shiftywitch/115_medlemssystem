@@ -18,6 +18,8 @@ if (!isLoggedIn()) {
     <br />
     <a href="aktiviteter.php">Registrer en aktivitet</a>
     <br />
+    <a href="medlemmer.php">Se medlemmer</a>
+    <br />
     <a href="assets/util/setup.php">Setup database</a>
     <form method="post"><button type="submit" name="submit">Logg ut!</button></form>
 

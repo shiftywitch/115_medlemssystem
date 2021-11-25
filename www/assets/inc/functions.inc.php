@@ -79,6 +79,13 @@ function isLoggedIn():bool {
 
 }
 
+function reDirectIfNotLoggedIn() {
+    if (!isLoggedIn()) {
+        header("location: login.php?error=notLoggedIn");
+        exit();
+    }
+}
+
 function logOutBruker() {
     $params = session_get_cookie_params();
     setcookie(session_name(), '', time() - 42000,

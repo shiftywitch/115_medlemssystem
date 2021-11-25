@@ -155,13 +155,15 @@ function dbSetupSQL():array {
 
     $queries['insertRoller'] = "
         INSERT INTO Rolle VALUES (NULL, 'LEDER'),
-                                 (NULL, 'KURSANSVARLIG');
+                                 (NULL, 'KURSANSVARLIG'),
+                                 (NULL, 'MEDLEM');
     ";
 
     $queries['insertRolleRegister'] = "
         INSERT INTO Rolle_register VALUES (1, 1),
                                           (1, 2),
-                                          (2, 2);
+                                          (2, 2),
+                                          (3, 3);
     ";
     return $queries;
 }
