@@ -3,10 +3,8 @@ require_once "assets/inc/html.inc.php";
 require_once "assets/inc/functions.inc.php";
 require_once "assets/inc/init.inc.php";
 
-if (!isLoggedIn()) {
-    header("location: login.php?error=notLoggedIn");
-    exit();
-} else {
+    reDirectIfNotLoggedIn();
+
     $db = database();
     $err = [];
 
@@ -90,5 +88,4 @@ if (!isLoggedIn()) {
     }
     ?>
 <?php
-    }
 htmlFooter();
