@@ -48,6 +48,8 @@ if (isset($_GET['rolle'])) {
 
     $rolle = strip_tags($_GET['rolle']);
     $kjoenn = strip_tags($_GET['kjoenn']);
+    $status = strip_tags($_GET['status']);
+    $medlemSiden = strip_tags($_GET['medlemSiden']);
     $where = [];
 
     $sql = 'SELECT m.*, p.poststed FROM Medlem m
@@ -61,6 +63,12 @@ if (isset($_GET['rolle'])) {
     if ($kjoenn != '') {
         $kjoennList = str_split($kjoenn);
         $where[] = "(m.kjoenn='".implode("' OR m.kjoenn='", $kjoennList)."')";
+    }
+    if ($status != '') {
+        $where[] = "m.kontigentStatus='$status'";
+    }
+    if ($medlemSiden != '') {
+        $where[] = "medlemStart>='$medlemSiden'";
     }
 
     if (count($where) > 0) {
