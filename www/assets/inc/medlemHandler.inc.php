@@ -68,7 +68,7 @@ if (isset($_GET['rolle'])) {
         $where[] = "m.kontigentStatus='$status'";
     }
     if ($medlemSiden != '') {
-        $where[] = "medlemStart>='$medlemSiden'";
+        $where[] = "medlemStart<='$medlemSiden'";
     }
 
     if (count($where) > 0) {
