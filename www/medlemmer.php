@@ -38,7 +38,10 @@ htmlHeader("Medlemmer");
         let startDato = document.getElementById("medlemStart")
         //En if statement bare for å belaste databasen derfor man prøver å fjerne filtre
         //når det er ingen filtre
-        if (checkBoxes.length > 0 || rolle.valueOf().value !== '' || startDato.valueOf().value !== '') {
+        if (checkBoxes.length > 0
+            || rolle.valueOf().value !== ''
+            || startDato.valueOf().value !== ''
+            || status.valueOf().value !== '') {
             checkBoxes.forEach(cb => cb.checked = false)
             rolle.selectedIndex = 0;
             status.selectedIndex = 0;

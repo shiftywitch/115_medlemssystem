@@ -129,6 +129,17 @@ function dbSetupSQL():array {
                     'F',
                     'BETALT',
                     '2019-11-11'
+                ),(
+                    NULL,
+                    'Jorunn',
+                    'Surdal',
+                    'Bodlestad',
+                    4462,
+                    'jsb@gmail.com',
+                    '1952-1-7',
+                    'F',
+                    DEFAULT,
+                    '2015-11-11'
                 );
         ";
 
@@ -163,7 +174,8 @@ function dbSetupSQL():array {
         INSERT INTO Rolle_register VALUES (1, 1),
                                           (1, 2),
                                           (2, 2),
-                                          (3, 3);
+                                          (3, 3),
+                                          (4, 3);
     ";
     return $queries;
 }
