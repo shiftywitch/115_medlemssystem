@@ -1,6 +1,6 @@
 <?php
-require_once "init.inc.php";
-require_once __DIR__ ."/../lib/medlem.class.php";
+require_once __DIR__ . "/../inc/init.inc.php";
+require_once __DIR__ . "/../lib/medlem.class.php";
 $db = database();
 
 function skrivUtMedlemmer(array $medlemmer) {
@@ -42,6 +42,15 @@ function skrivUtMedlemmer(array $medlemmer) {
      }
 }
 
+if (isset($_GET['m'])) {
+    $resultat = [];
+
+    $soek = strip_tags($_GET['m']);
+    $resultat = Medlem::soekIMedlemmer($db, $soek);
+    echo json_encode($resultat);
+    exit();
+}
+
 if (isset($_GET['rolle'])) {
     $medlemmer = [];
 
@@ -79,4 +88,5 @@ if (isset($_GET['rolle'])) {
     }
 
     skrivUtMedlemmer(Medlem::hentAlleMedlemmer($db));
+    exit();
 }
