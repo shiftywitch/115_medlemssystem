@@ -71,7 +71,7 @@ function isLoggedIn():bool {
     //Skjekker om session variabler stemmer. Har med USER_AGENT bare for litt ekstra sikkerhet
     //Kunne hatt med en nøkkel i databasen som også valideres.
     if (md5($_SERVER['HTTP_USER_AGENT']) == @$_SESSION['brukerAgent']) {
-        $result = $db->query("SELECT * FROM bruker WHERE brukerId = '{$_SESSION['brukerId']}'");
+        $result = $db->query("SELECT * FROM Bruker WHERE brukerId = '{$_SESSION['brukerId']}'");
         return $result->num_rows > 0;
     }
 

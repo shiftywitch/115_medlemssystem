@@ -4,7 +4,7 @@ require_once 'assets/inc/init.inc.php';
 require_once 'assets/inc/functions.inc.php';
 
 if (isLoggedIn()) {
-    header("location: index.php");
+    header("location: ./");
     exit();
 }
 
@@ -33,7 +33,7 @@ if (isset($_POST['submit'])) {
             $err[] = 'Feil brukernav og/eller passord';
         } else {
             //Om loggin er en suksess.
-            header("location: index.php");
+            header("location: ./");
             exit();
         }
     }

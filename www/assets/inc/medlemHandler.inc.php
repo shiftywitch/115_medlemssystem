@@ -54,8 +54,8 @@ if (isset($_GET['rolle'])) {
 
     $sql = 'SELECT m.*, p.poststed FROM Medlem m
         INNER JOIN Postnummer p on m.postnummer = p.postnummer
-        INNER JOIN rolle_register rr on m.medlemId = rr.medlemId
-        INNER JOIN rolle r on r.rolleId = rr.rolleId';
+        INNER JOIN Rolle_register rr on m.medlemId = rr.medlemId
+        INNER JOIN Rolle r on r.rolleId = rr.rolleId';
 
     if ($rolle != '') {
         $where[] = "r.rolleId='$rolle'";

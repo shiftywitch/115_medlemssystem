@@ -1,0 +1,10 @@
+
+# Gi brukere feilmelding hvis de prøver å besøke noen filer som kun skal inkluderes
+<Files "*.inc.php">
+    Require all denied
+</Files>
+
+# Gi brukere feilmelding hvis de prøver å besøke noen klasse-filer
+<Files "*.class.php">
+    Require all denied
+</Files>

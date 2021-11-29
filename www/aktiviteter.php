@@ -12,7 +12,7 @@ require_once "assets/inc/init.inc.php";
         if (emptyInputs($_POST['aktivitet'], $_POST['beskrivelse'], $_POST['start'], $_POST['slutt'], $_POST['ansvarlig'])) {
             $err[] = "Fyll ut alle felt";
         } else {
-            $sql = "INSERT INTO aktivitet VALUES (NULL, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO Aktivitet VALUES (NULL, ?, ?, ?, ?, ?)";
             $stmt = $db->prepare($sql);
             $stmt->bind_param("ssiss",
                 $_POST['aktivitet'],
@@ -39,7 +39,7 @@ require_once "assets/inc/init.inc.php";
         <?php
         //Ved å sette WHERE start >= CURRENT_DATE så forsikrer vi
         //oss å bare få tilbake de aktiviteter vi vill ha.
-        $sql = "SELECT * FROM aktivitet WHERE start >= CURRENT_DATE";
+        $sql = "SELECT * FROM Aktivitet WHERE start >= CURRENT_DATE";
         $result = $db->query($sql);
         while ($row = $result->fetch_assoc()) {
             echo "\t\t\t\t<td>{$row['navn']}</td>\n";
@@ -66,7 +66,7 @@ require_once "assets/inc/init.inc.php";
             <?php
             $sql = "
                 SELECT m.medlemId, fornavn, etternavn 
-                FROM medlem m
+                FROM Medlem m
                 INNER JOIN Rolle_register rg ON rg.medlemId = m.medlemId
                 WHERE rg.rolleId = 2;
             ";

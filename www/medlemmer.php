@@ -56,7 +56,7 @@ htmlHeader("Medlemmer");
     <select name="roller" id="roller" onchange="medlemmerMedFilter()">
         <option value="">Velg rolle</option>
         <?php
-            $sql = "SELECT * FROM rolle";
+            $sql = "SELECT * FROM Rolle";
             $result = $db->query($sql);
             while($row = $result->fetch_assoc()) {
                 echo "\t<option value='{$row['rolleId']}'>{$row['rolleNavn']}</option>";
