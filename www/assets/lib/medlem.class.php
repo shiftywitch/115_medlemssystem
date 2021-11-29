@@ -40,6 +40,45 @@ class Medlem
 
     }
 
+    public static function soekIMedlemmer(mysqli $db, string $needle) {
+        $resultat = [];
+
+        $needle = preg_replace('/(?<!\\\)([%_])/', '\\\$1',$needle);
+
+        $sql = "
+            SELECT medlemId, fornavn, etternavn, epost
+            FROM Medlem
+            WHERE fornavn LIKE CONCAT(?,'%') OR etternavn LIKE CONCAT(?,'%') OR epost LIKE CONCAT(?,'%')
+        ";
+
+        $statement = $db->prepare($sql);
+        $statement->bind_param("sss", $needle, $needle, $needle);
+        $statement->execute();
+        $result = $statement->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $resultat[$row['medlemId']] = array($row['fornavn'], $row['etternavn'], $row['epost']);
+        }
+
+        return $resultat;
+    }
+
+    public static function hentAlleMedlemMailAdresser(mysqli $db):array {
+        $medlemEmail = [];
+
+        $stmt = "
+            SELECT epost FROM Medlem;
+        ";
+
+        $stmt = $db->prepare($stmt);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $medlemEmail[] = $row['epost'];
+        }
+
+        return $medlemEmail;
+    }
+
     public static function hentAlleMedlemmer(mysqli $db, mysqli_stmt $stmt = null):array {
         $medlemmer = [];
 

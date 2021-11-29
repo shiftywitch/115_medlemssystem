@@ -7,3 +7,7 @@ $config["db"]["database"] = "database";
 
 $config["general"]["projectRoot"] = "";
 $config["general"]["pepper"] = "IAmBadAtSecurity";
+
+$config["mail"]["smtpServer"] = "smtp.gmail.com";
+$config["mail"]["username"] = "mail";
+$config["mail"]["password"] = "password";

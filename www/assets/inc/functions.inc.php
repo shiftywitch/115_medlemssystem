@@ -1,9 +1,11 @@
 <?php
 
+require_once "init.inc.php";
+
 function emptyInputs(...$inputs):bool {
     $toReturn = false;
     foreach ($inputs as $input) {
-        if (empty($input)) {
+        if (empty($input) || $input == '') {
             $toReturn = true;
         }
     }
