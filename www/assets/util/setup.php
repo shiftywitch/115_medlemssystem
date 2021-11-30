@@ -8,6 +8,7 @@ require_once "../inc/dbSql.inc.php";
 require_once '../inc/config.inc.php';
 
 global $config;
+$pRoot = $config["general"]["projectRoot"] ?? '';
 
 if(isset($_POST['brukerDatabase'])){
     require '../inc/init.inc.php';
@@ -17,7 +18,10 @@ if(isset($_POST['brukerDatabase'])){
     $db->query("CREATE DATABASE {$config["db"]["database"]};");
     $db->query("USE {$config["db"]["database"]};");
 
-    foreach (dbSetupSQL() as $table => $query) {
+    $email = $db->real_escape_string($_POST['email']);
+    $pass = $db->real_escape_string($_POST['pass']);
+
+    foreach (dbSetupSQL($email, $pass) as $table => $query) {
         $db->query($query);
         if ($temp = $db->error) {
             $err[] = "Database error: " . $temp;
@@ -76,10 +80,11 @@ elseif(isset($_POST['goProject'])){
     }
     ?>
     <form action='setup.php' method='POST'>
+        <p><label>E-post:<input type="email" name="email" required></label></p>
+        <p><label>Passord:<input type="password" name="pass" required></label></p>
         <p><button name="brukerDatabase">Sett opp brukerdatabasen</button></p>
-<!--        <p><button name="recipeTables">Setup recipe tables</button></p>-->
-        <br>
-        <p><button name="goProject">Gå til prosjektet</button></p>
     </form>
+    <br>
+    <p><a href="<?=$pRoot;?>/"><button>Gå til prosjektet</button></a></p>
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
 
-function dbSetupSQL():array {
+function dbSetupSQL($email = "johbirk00@gmail.com", $pass = "password"):array {
     $queries = array();
 
     $queries['createPostnummerTable'] = "
@@ -95,52 +95,11 @@ function dbSetupSQL():array {
         ";
 
     $queries['insertMedlemData'] = "
-            INSERT INTO Medlem
-                VALUES(
-                    NULL,
-                    'Johannes',
-                    'Birkeland',
-                    'Teian 6',
-                    4462,
-                    'johannesbi@uia.no',
-                    '2000-11-19',
-                    'M',
-                    'BETALT',
-                    '2019-11-11'
-                ), (
-                    NULL,
-                    'Per',
-                    'Persen',
-                    'Per Gaten',
-                    4462,
-                    'perper@uia.no',
-                    '2000-11-19',
-                    'O',
-                    'BETALT',
-                    '2019-11-11'
-                ), (
-                    NULL,
-                    'Lina',
-                    'Ridley',
-                    'En gate i krs',
-                    4614,
-                    'linaridley@uia.no',
-                    '2002-07-26',
-                    'F',
-                    'BETALT',
-                    '2019-11-11'
-                ),(
-                    NULL,
-                    'Jorunn',
-                    'Surdal',
-                    'Bodlestad',
-                    4462,
-                    'jsb@gmail.com',
-                    '1952-1-7',
-                    'F',
-                    DEFAULT,
-                    '2015-11-11'
-                );
+            INSERT INTO Medlem VALUES
+            (NULL, 'Johannes',  'Birkeland',    'Teian 6',      4462, 'johannesbi@uia.no',  '2000-11-19', 'M', 'BETALT', '2019-11-11'), 
+            (NULL, 'Per',       'Persen',       'Per Gaten',    4462, 'perper@uia.no',      '2000-11-19', 'O', 'BETALT', '2019-11-11'), 
+            (NULL, 'Lina',      'Ridley',       'En gate i krs',4614, 'linaridley@uia.no',  '2002-07-26', 'F', 'BETALT', '2019-11-11'),
+            (NULL, 'Jorunn',    'Surdal',       'Bodlestad',    4462, 'jsb@gmail.com',      '1952-01-07', 'F', DEFAULT,  '2015-11-11');
         ";
 
     $queries['insertInteresseRegister'] = "
@@ -159,9 +118,9 @@ function dbSetupSQL():array {
                                          
         ";
 
-    $password = password_hash('password', PASSWORD_DEFAULT);
+    $password = password_hash($pass, PASSWORD_DEFAULT);
     $queries['insertBruker'] = "
-        INSERT INTO Bruker VALUES (NULL, 'johbirk00@gmail.com', '$password', '', '')
+        INSERT INTO Bruker VALUES (NULL, '$email', '$password', '', '')
     ";
 
     $queries['insertRoller'] = "
