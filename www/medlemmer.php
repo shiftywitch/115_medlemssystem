@@ -51,33 +51,46 @@ htmlHeader("Medlemmer");
         }
     }
 </script>
-<div>
-    <label for="roller">Rolle: </label>
-    <select name="roller" id="roller" onchange="medlemmerMedFilter()">
-        <option value="">Velg rolle</option>
-        <?php
-            $sql = "SELECT * FROM Rolle";
-            $result = $db->query($sql);
-            while($row = $result->fetch_assoc()) {
-                echo "\t<option value='{$row['rolleId']}'>{$row['rolleNavn']}</option>";
-            }
-        ?>
-    </select>
-    <label for="kontigentStatus">Kontigent status: </label>
-    <select name="kontigentStatus" id="kontigentStatus" onchange="medlemmerMedFilter()">
-        <option value="">Status</option>
-        <option value="BETALT">Betalt</option>
-        <option value="IKKE_BETALT">Ikke betalt</option>
-    </select>
-    <input type="checkbox" id="cbM" name="kjoenn[]" onchange="medlemmerMedFilter()" value="M"><label for="cbM">Mann</label>
-    <input type="checkbox" id="cbF" name="kjoenn[]" onchange="medlemmerMedFilter()" value="F"><label for="cbF">Dame</label>
-    <input type="checkbox" id="cbO" name="kjoenn[]" onchange="medlemmerMedFilter()" value="O"><label for="cbO">Annet</label>
-    <label for="medlemStart">Medlem Siden: </label><input type="date" id="medlemStart" name="medlemStart" onchange="medlemmerMedFilter()">
-    <button type="button" name="rFilter" onclick="fjernFilter()">Fjern filter</button>
+<div class="container">
+
+    <div class="mb-3 row m-auto">
+        <div class="col-auto m-auto">
+            <label for="roller" class="">Rolle: </label>
+            <select class="form-select-sm" name="roller" id="roller" onchange="medlemmerMedFilter()">
+                <option value="">Velg rolle</option>
+                <?php
+                    $sql = "SELECT * FROM Rolle";
+                    $result = $db->query($sql);
+                    while($row = $result->fetch_assoc()) {
+                        echo "\t<option value='{$row['rolleId']}'>{$row['rolleNavn']}</option>";
+                    }
+                ?>
+            </select>
+        </div>
+        <div class="col-auto m-auto">
+            <label for="kontigentStatus" class="">Kontigentstatus: </label>
+            <select class="form-select-sm" name="kontigentStatus" id="kontigentStatus" onchange="medlemmerMedFilter()">
+                <option value="">Status</option>
+                <option value="BETALT">Betalt</option>
+                <option value="IKKE_BETALT">Ikke betalt</option>
+            </select>
+        </div>
+        <div class="col-auto m-auto">
+            <input type="checkbox" id="cbM" name="kjoenn[]" onchange="medlemmerMedFilter()" value="M"> <label for="cbM">Mann</label>
+            <input type="checkbox" id="cbF" name="kjoenn[]" onchange="medlemmerMedFilter()" value="F"> <label for="cbF">Dame</label>
+            <input type="checkbox" id="cbO" name="kjoenn[]" onchange="medlemmerMedFilter()" value="O"> <label for="cbO">Annet</label>
+        </div>
+        <div class="col-auto m-auto">
+            <label for="medlemStart">Medlem Siden: </label>
+            <input type="date" class="" id="medlemStart" name="medlemStart" onchange="medlemmerMedFilter()">
+        </div>
+        <div class="col-auto m-auto">
+            <button type="button" class="btn btn-secondary" name="rFilter" onclick="fjernFilter()">Fjern filter</button>
+        </div>
+    </div>
+
+    <div id="medlemmer"><?php skrivUtMedlemmer(Medlem::hentAlleMedlemmer($db));?></div>
+
 </div>
-<div id="medlemmer"><?php skrivUtMedlemmer(Medlem::hentAlleMedlemmer($db));?></div>
-
-<a href="index.php"><button>Gå tilbake</button></a>
-
 <?php
     htmlFooter();
