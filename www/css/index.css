@@ -1,3 +1,21 @@
-table, th, td {
-    border: 1px solid black;
+
+/* Bootstrap Tweaks */
+.bg-primary, .btn-primary {
+    background-color: var(--accent) !important;
+    border-color: var(--accent);
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-active) !important;
+    border-color: var(--accent-active);
+}
+
+:root {
+    --accent: #336942;
+    --accent-active: #33694280;
+    --bs-primary: var(--accent);
+}
+
+.container-md, .container-sm {
+    max-width: 720px;
 }

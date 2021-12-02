@@ -30,7 +30,8 @@ require_once "assets/inc/init.inc.php";
 
     htmlHeader("Aktiviteter");
 ?>
-    <table>
+<div class="container-md">
+    <table class="table table-dark table-striped mb-5">
         <tr>
             <th>Navn</th>
             <th>Start</th>
@@ -50,36 +51,54 @@ require_once "assets/inc/init.inc.php";
         ?>
     </table>
 
-    <form method="post">
-        <p>Navn:</p>
-        <input type="text" name="aktivitet" placeholder="Aktivitet" required>
-        <br />
-        <p>Beskrivelse:</p>
-        <textarea name="beskrivelse" placeholder="Beskrivelse" required></textarea>
-        <br />
-        <p>Start og slutt:</p>
-        <input type="datetime-local" name="start" required>
-        <input type="datetime-local" name="slutt" required>
-        <br />
-        <p>Ansvarlig: </p>
-        <select name="ansvarlig">
-            <?php
-            $sql = "
-                SELECT m.medlemId, fornavn, etternavn 
-                FROM Medlem m
-                INNER JOIN Rolle_register rg ON rg.medlemId = m.medlemId
-                WHERE rg.rolleId = 2;
-            ";
-            $result = $db->query($sql);
-            echo "\n";
-            while ($row = $result->fetch_assoc()) {
-                echo "\t\t\t<option value='{$row['medlemId']}'>{$row['fornavn']} {$row['etternavn']}</option>\n";
-            }
-            ?>
-        </select>
-        <br />
-        <br />
-        <button type="submit" name="submit">Opprett aktivitet</button>
+    <form method="post" class="m-auto w-50 p-3" style="box-shadow: #fff2 0 0 6px 3px;">
+        <h4>Ny aktivitet</h4>
+        <div class="mb-3 row">
+            <label for="aktivitet" class="col-sm-3 col-form-label">Navn</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" name="aktivitet" id="aktivitet" placeholder="Aktivitet" required>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="beskrivelse" class="col-sm-3 col-form-label">Beskrivelse</label>
+            <div class="col-sm-9">
+                <textarea name="beskrivelse" class="form-control" id="beskrivelse" placeholder="Beskrivelse" required></textarea>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="start" class="col-sm-3 col-form-label">Start og slutt</label>
+            <div class="col-sm-9">
+                <input type="datetime-local" class="form-control" name="start" id="start" required>
+                <input type="datetime-local" class="form-control" name="slutt" id="slutt" required>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="ansvarlig" class="col-sm-3 col-form-label">Ansvarlig</label>
+            <div class="col-sm-9">
+                <select name="ansvarlig" id="ansvarlig" class="form-select">
+                    <?php
+                    $sql = "
+                        SELECT m.medlemId, fornavn, etternavn 
+                        FROM Medlem m
+                        INNER JOIN Rolle_register rg ON rg.medlemId = m.medlemId
+                        WHERE rg.rolleId = 2;
+                    ";
+                    $result = $db->query($sql);
+                    echo "\n";
+                    while ($row = $result->fetch_assoc()) {
+                        echo "\t\t\t<option value='{$row['medlemId']}'>{$row['fornavn']} {$row['etternavn']}</option>\n";
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" name="submit" class="btn btn-primary w-50">Opprett aktivitet</button>
+        </div>
     </form>
 
     <?php
@@ -87,5 +106,6 @@ require_once "assets/inc/init.inc.php";
         foreach ($err as $error) {echo "<p>$error</p>";}
     }
     ?>
+</div>
 <?php
 htmlFooter();

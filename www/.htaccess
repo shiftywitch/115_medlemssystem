@@ -8,3 +8,5 @@
 <Files "*.class.php">
     Require all denied
 </Files>
+
+RedirectPermanent /favicon.ico /img/logo.png

@@ -21,7 +21,7 @@ if (isset($_POST['submit'])) {
         $err[] = 'Fyll ut alle felt';
     }
     if (invalidEmail($email) !== false) {
-        $err[] = 'Fyll ut en gyldig email';
+        $err[] = 'Fyll ut en gyldig epost';
     }
     if (!getBrukerByEmail($email)) {
         $err[] = 'Feil brukernavn og/eller passord';
@@ -30,7 +30,7 @@ if (isset($_POST['submit'])) {
     if (empty($err)) {
         //Om loggin feiler
         if (!loginUser($email, $passord)) {
-            $err[] = 'Feil brukernav og/eller passord';
+            $err[] = 'Feil brukernavn og/eller passord';
         } else {
             //Om loggin er en suksess.
             header("location: ./");
@@ -43,21 +43,32 @@ require_once 'assets/inc/html.inc.php';
 htmlHeader("Login");
 ?>
 
-    <div class="login">
-        <h2>Log In</h2>
-        <div>
+    <div class="container d-flex justify-content-center align-items-center h-100" style="min-height: calc(100vh - 100px);">
+
+        <div class="login p-2 rounded-3" style="box-shadow: #111e 0 0 3px 3px; background-color: #111;">
+            <h2>Logg inn</h2>
+            <?php
+            if (!empty($err)) {
+                foreach ($err as $error) {
+                    echo "<div class='alert alert-danger' role='alert'>$error</div>";
+                }
+            }
+            ?>
             <form method="post">
-                <input type="email" required name="email" placeholder="Email...">
-                <input type="password" required name="pwd" placeholder="Password...">
-                <button type="submit" name="submit">Log in</button>
+                <div class="form-floating text-dark mb-3">
+                    <input type="email" name="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                    <label for="floatingInput">Epost</label>
+                </div>
+                <div class="form-floating text-dark mb-3">
+                    <input type="password" class="form-control" id="floatingPassword" name="pwd" placeholder="Password">
+                    <label for="floatingPassword">Passord</label>
+                </div>
+                <button type="submit" name="submit" class="btn btn-primary w-100">Log in</button>
             </form>
         </div>
-        <?php
-            if (!empty($err)) {
-                foreach ($err as $error) {echo "<p>$error</p>";}
-            }
-        ?>
+
     </div>
+
 
 <?php
 htmlFooter();

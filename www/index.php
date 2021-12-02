@@ -14,15 +14,22 @@ if (!isLoggedIn()) {
     htmlHeader("Frontpage");
 ?>
 
-    <h1>Velkommen tilbake <?php echo $_SESSION['brukerEpost']; ?></h1>
-    <br />
-    <a href="aktiviteter.php">Registrer en aktivitet</a>
-    <br />
-    <a href="medlemmer.php">Se medlemmer</a>
-    <br />
-    <a href="assets/util/setup.php">Setup database</a>
-    <form method="post"><button type="submit" name="submit">Logg ut!</button></form>
 
+<div class="container text-center">
+
+    <h1>Velkommen tilbake <?php echo $_SESSION['brukerEpost']; ?></h1>
+
+    <br />
+
+    <p><a href="aktiviteter.php"><button type="button" class="btn btn-primary">Registrer en aktivitet</button></a></p>
+
+    <p><a href="medlemmer.php"><button type="button" class="btn btn-primary">Se medlemmer</button></a></p>
+
+    <p><a href="assets/util/setup.php"><button type="button" class="btn btn-secondary">Setup database</button></a></p>
+
+    <form method="post"><button type="submit" name="submit" class="btn btn-warning">Logg ut!</button></form>
+
+</div>
 <?php
     htmlFooter();
 }

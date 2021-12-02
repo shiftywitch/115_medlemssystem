@@ -5,7 +5,7 @@ $db = database();
 
 function skrivUtMedlemmer(array $medlemmer) {
      if (!empty($medlemmer)) {?>
-        <table>
+        <table class="table table-dark table-striped">
             <thead>
             <tr>
                 <th>Fornavn</th>
@@ -17,7 +17,6 @@ function skrivUtMedlemmer(array $medlemmer) {
                 <th>Kjønn</th>
                 <th>Medlem siden</th>
                 <th>Kontigentstatus</th>
-                <th></th>
             </tr>
             </thead>
             <tbody>
