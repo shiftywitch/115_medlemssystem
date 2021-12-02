@@ -8,6 +8,7 @@ require_once "../inc/dbSql.inc.php";
 require_once '../inc/config.inc.php';
 
 global $config;
+$pRoot = $config["general"]["projectRoot"] ?? '';
 
 if(isset($_POST['brukerDatabase'])){
     require '../inc/init.inc.php';
@@ -83,9 +84,7 @@ elseif(isset($_POST['goProject'])){
         <p><label>Passord:<input type="password" name="pass" required></label></p>
         <p><button name="brukerDatabase">Sett opp brukerdatabasen</button></p>
     </form>
-    <form action='setup.php' method='POST'>
-        <br>
-        <p><button name="goProject">Gå til prosjektet</button></p>
-    </form>
+    <br>
+    <p><a href="<?=$pRoot;?>/"><button>Gå til prosjektet</button></a></p>
 </body>
 </html>
