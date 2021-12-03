@@ -4,7 +4,11 @@ require_once __DIR__ . "/../lib/medlem.class.php";
 $db = database();
 
 //Funksjon som skriver ut alle medlemmer i en table.
-function skrivUtMedlemmer(array $medlemmer) {
+function skrivUtMedlemmer(array $medlemmer, string $funksjonFeltHtml = "") {
+    if(stristr($_SERVER['REQUEST_URI'],"/medlemmer.php") || stristr($_SERVER['HTTP_REFERER'],"/medlemmer.php")){
+        $funksjonFeltHtml = "<form data-medlemid='%UID%' class='medlemForm'><input type='hidden' name='medlemid' value='%UID%'><button class='btn btn-secondary'> <img alt='Rediger' src='img/pencil.svg'> </button></form>";
+    }
+
      if (!empty($medlemmer)) {?>
         <table class="table table-dark table-striped">
             <thead>
@@ -13,11 +17,14 @@ function skrivUtMedlemmer(array $medlemmer) {
                 <th>Etternavn</th>
                 <th>Adresse</th>
                 <th>Postnummer</th>
+                <th>Mobilnummer</th>
                 <th>Epost</th>
                 <th>Fødselsdato</th>
                 <th>Kjønn</th>
                 <th>Medlem siden</th>
                 <th>Kontigentstatus</th>
+                <th>Rolle(r)</th>
+                <?php if(!empty($funksjonFeltHtml)) { echo "<th></th>"; } ?>
             </tr>
             </thead>
             <tbody>
@@ -28,12 +35,17 @@ function skrivUtMedlemmer(array $medlemmer) {
                     echo "    <td>".($medlem->fornavn ?? '')."</td>\n";
                     echo "    <td>".($medlem->etternavn ?? '')."</td>\n";
                     echo "    <td>".($medlem->adresse ?? '');
-                    echo "    <td>{$medlem->postNummer} {$medlem->postSted}</td>\n";
+                    echo "    <td>".str_pad($medlem->postnummer, 4, '0', STR_PAD_LEFT)." {$medlem->poststed}</td>\n";
+                    echo "    <td>".($medlem->mobilnummer ?? '')."</td>\n";
                     echo "    <td>".($medlem->epost ?? '')."</td>\n";
                     echo "    <td>".($medlem->dob->format('d. M Y') ?? '')."</td>\n";
                     echo "    <td>".($medlem->kjoenn ?? '')."</td>\n";
                     echo "    <td>".($medlem->medlemStart->format('d. M Y') ?? '')."</td>\n";
                     echo "    <td>".($medlem->kontigentstatus ?? '')."</td>\n";
+                    echo "    <td>".(implode(', ', $medlem->roller))."</td>\n";
+                    if(!empty($funksjonFeltHtml)) {
+                        echo "    <td>".str_replace('%UID%', $medlemID, $funksjonFeltHtml)."</td>";
+                    }
                     echo "</tr>\n";
                 }
             ?>

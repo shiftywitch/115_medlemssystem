@@ -24,14 +24,24 @@ if(isset($_POST['brukerDatabase'])){
     foreach (dbSetupSQL($email, $pass) as $table => $query) {
         $db->query($query);
         if ($temp = $db->error) {
-            $err[] = "Database error: " . $temp;
+            $err[] = "Database error while trying $table: " . $temp;
         } else {
             $msg[] = "$table query fullførte";
         }
     }
 }
-elseif(isset($_POST['goProject'])){
-    header("Location: /");
+elseif(isset($_POST['insettPostnumre'])){
+    require '../inc/init.inc.php';
+    $db = database();
+
+    $sql = file_get_contents('../lib/postnummersql.sql');
+    $db->multi_query($sql);
+    if($error = $db->error){
+        $err[] = "Fikk ikke satt inn postnumre: ".$error;
+    }
+    else {
+        $msg[] = "Satte inn alle postnumre.";
+    }
 }
 
 ?><!DOCTYPE html>
@@ -83,6 +93,9 @@ elseif(isset($_POST['goProject'])){
         <p><label>E-post:<input type="email" name="email" required></label></p>
         <p><label>Passord:<input type="password" name="pass" required></label></p>
         <p><button name="brukerDatabase">Sett opp brukerdatabasen</button></p>
+    </form>
+    <form action='setup.php' method='POST'>
+        <p><button name="insettPostnumre">Fyll postnumre</button></p>
     </form>
     <br>
     <p><a href="<?=$pRoot;?>/"><button>Gå til prosjektet</button></a></p>
