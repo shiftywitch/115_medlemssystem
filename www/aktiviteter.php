@@ -10,7 +10,9 @@ require_once "assets/inc/init.inc.php";
 
     if (isset($_POST['submit'])) {
         if (emptyInputs($_POST['aktivitet'], $_POST['beskrivelse'], $_POST['start'], $_POST['slutt'], $_POST['ansvarlig'])) {
-            $err[] = "Fyll ut alle felt";
+            $err[] = "Fyll ut alle felt.";
+        } else if (strtotime($_POST['start']) > strtotime($_POST['slutt'])) {
+            $err[] = "En aktivitet kan ikke starte etter den slutter.";
         } else {
             $sql = "INSERT INTO Aktivitet VALUES (NULL, ?, ?, ?, ?, ?)";
             $stmt = $db->prepare($sql);
@@ -50,6 +52,12 @@ require_once "assets/inc/init.inc.php";
         }
         ?>
     </table>
+
+    <?php
+    if (!empty($err)) {
+        foreach ($err as $error) {echo "<div class='alert alert-danger m-auto w-50 p-3 '>$error</div><br />";}
+    }
+    ?>
 
     <form method="post" class="m-auto w-50 p-3" style="box-shadow: #fff2 0 0 6px 3px;">
         <h4>Ny aktivitet</h4>
@@ -100,12 +108,6 @@ require_once "assets/inc/init.inc.php";
             <button type="submit" name="submit" class="btn btn-primary w-50">Opprett aktivitet</button>
         </div>
     </form>
-
-    <?php
-    if (!empty($err)) {
-        foreach ($err as $error) {echo "<p>$error</p>";}
-    }
-    ?>
 </div>
 <?php
 htmlFooter();
