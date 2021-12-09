@@ -119,4 +119,22 @@ class Medlem
         $statement->close();
         return $medlemmer;
     }
+
+    public static function getBrukerByEmail(string $email) {
+        global $db;
+
+        if($db == null){
+            $db = database();
+        }
+        $sql = "SELECT * FROM Bruker WHERE epost = ?;";
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($row = $result->fetch_assoc()) {
+            return $row;
+        } else {
+            return false;
+        }
+    }
 }

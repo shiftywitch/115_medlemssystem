@@ -2,6 +2,7 @@
 
 require_once 'assets/inc/init.inc.php';
 require_once 'assets/inc/functions.inc.php';
+require_once 'assets/lib/medlem.class.php';
 
 if (isLoggedIn()) {
     header("location: ./");
@@ -23,7 +24,7 @@ if (isset($_POST['submit'])) {
     if (invalidEmail($email) !== false) {
         $err[] = 'Fyll ut en gyldig epost';
     }
-    if (!getBrukerByEmail($email)) {
+    if (!Medlem::getBrukerByEmail($email)) {
         $err[] = 'Feil brukernavn og/eller passord';
     }
 
