@@ -103,7 +103,7 @@ if(isset($_GET['redigeringForm'])){
 }
 
 function skrivMedlemsForm($medlemId = null){
-    global $db;
+    global $db, $projectRoot;
 
     $felter = Medlem::alleFelt();
 
@@ -137,7 +137,7 @@ function skrivMedlemsForm($medlemId = null){
 
     ?>
 
-    <form method="post" action="<?=explode('?', $_SERVER['HTTP_REFERER'] ?? $_SERVER['REQUEST_URI'])[0];?>" id="nyttMedlemForm" class="m-auto p-3 row" style="box-shadow: #fff2 0 0 6px 3px;">
+    <form method="post" action="<?=$projectRoot ?? "";?>/medlemmer.php" id="nyttMedlemForm" class="m-auto p-3 row" style="box-shadow: #fff2 0 0 6px 3px;">
         <h4><?=$medlemId == null?"Nytt medlem":"Rediger medlem";?></h4>
 
         <div class="col-md-6">
