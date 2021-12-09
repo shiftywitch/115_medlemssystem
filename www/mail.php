@@ -89,7 +89,7 @@ htmlHeader("Mail")
                 </datalist>
                 <!-- Input for å velge alle medlemmer som mottakere -->
                 <input type="checkbox" name="checkBoxAlle" id="alleMedlemmer" value="true">
-                <label for="alleMedlemmer" class="col-sm-5 col-form-label">Alle medlemmer</label>
+                <label for="alleMedlemmer" class="col-form-label">Alle medlemmer</label>
             </div>
         </div>
 

@@ -1,55 +1,66 @@
 <?php
 require_once __DIR__ . "/../inc/init.inc.php";
+require_once __DIR__ . "/../lib/HtmlForm.class.php";
 require_once __DIR__ . "/../lib/medlem.class.php";
+
+// Fikser en databasetilkobling
 $db = database();
 
 $msg = $msg ?? array();
 $err = $err ?? array();
 
-
+// Hvis en av sidene denne er inkludert på har et skjema sendt inn med et nytt medlem
 if(isset($_POST['nyttMedlem'])){
+
+    // Ny tom Medlem klasse.
     $nyttMedlem = new Medlem();
 
-    $nyttMedlem->rolle = $_POST['rolle'] ?? 3;
-
+    // Løkke som går gjennom klassens Tekst-felt (så Tall-felt og Dato-felter), definert statisk for klassen.
     foreach (Medlem::alleTekstFelt() as $felt){
-        // TEKST
         if(isset($_POST[$felt])){
+            // Oppdaterer klassens verdier.
             $nyttMedlem->{$felt} = $_POST[$felt] ?? '';
         }
     }
     foreach (Medlem::alleTallFelt() as $felt){
-        // TALL
         if(isset($_POST[$felt]) && is_numeric($_POST[$felt])){
             $nyttMedlem->{$felt} = $_POST[$felt];
         }
     }
     foreach (Medlem::$feltDatoObl as $felt){
-        // DATO
+        // Klassen vil ha DateTime-datoer, så her lager vi et DateTime objekt for dato-feltene.
         $nyttMedlem->{$felt} = DateTime::createFromFormat('Y-m-d', $_POST[$felt]);
     }
 
+    // Her setter vi inn rollene som er valgt i skjemaet.
     if(!empty($_POST['rolle'])){
         foreach ($_POST['rolle'] as $rid){
             $nyttMedlem->rollerId[] = $rid;
         }
     }
     else {
+        // Hvis ingen roller er valgt, settes det inn en standard-rolle som er definert i medlem.class.php
         $nyttMedlem->rollerId[] = STANDARD_ROLLE_ID;
     }
 
+    // lagreMedlem() er en metode for klassen som verifiserer og lagrer info i databasen. Eventuelle feilmeldinger returneres som en array()
     if(($error = $nyttMedlem->lagreMedlem()) === true){
         $msg[] = "Medlemmet ble lagt inn!";
+
+        // Unsetter _POST-variablen så skjemaet ikke vises når siden lastes igjen.
         unset( $_POST['nyttMedlem'] );
     }
     else {
         $err = $error;
     }
 }
+// Ellers hvis skjemaet har at et medlem skal redigeres
 else if(isset($_POST['redigerMedlem'])){
 
+    // I motsetning til over, så starter vi her med klasse-elementet til medlemmet som redigeres.
     $redigerMedlem = Medlem::hentMedlem($db, $_POST['medlemid']);
 
+    // Her brukes metoden Medlem::setFelt() istedenfor å sette verdiene, da det gjør det mulig å loggføre hva som er endret.
     foreach (array_merge(Medlem::alleTekstFelt(), Medlem::alleTallFelt()) as $felt){
         if(isset($_POST[$felt])){
             $redigerMedlem->setFelt($felt, $_POST[$felt]);
@@ -63,14 +74,18 @@ else if(isset($_POST['redigerMedlem'])){
         }
     }
 
+    // Oppdatering av roller skjer i en egen metode.
     if($redigerMedlem->oppdaterRoller($_POST['rolle'] ?? array(STANDARD_ROLLE_ID)) === false){
         $err[] = "Det skjedde en feil med endringen av roller. Prøv igjen.";
     }
 
+    // Manuell kontroll på hva som er endret, og skriver det til nettleseren.
     if(!empty($redigerMedlem->endredeFelt)){
-        $msg[] = "Endrede felter: <br>".implode('<br>', $redigerMedlem->endredeFelt);
+        $msg[] = "Oppdaterte verdier: <br>".implode('<br>', $redigerMedlem->endredeFelt);
 
+        // Her lagres medlemmet på nytt. Eventuelle feilmeldinger returneres fra metoden.
         if(($errors = $redigerMedlem->lagreMedlem()) !== true){
+            // Hvis det er eventuelle tidligere feilmeldinger, blir de nye feilmeldingene lagt til på slutten.
             $err = array_merge($err, $errors);
         }
         else {
@@ -78,25 +93,33 @@ else if(isset($_POST['redigerMedlem'])){
         }
     }
 
+    // Vi unsetter POST her for å gjøre at verdiene ikke kommer inn i skjemaet igjen hvis det skal legges til et nytt medlem nå.
     unset($_POST);
 }
 
+// Hvis det kommer en GET-forespørsel hit, så skrives en redigerings-form ut tilbake, med gitt medlem-info
+if(isset($_GET['redigeringForm'])){
+    skrivMedlemsForm($_GET['redigeringForm']);
+}
 
 function skrivMedlemsForm($medlemId = null){
     global $db;
 
-    $felter = array_merge(Medlem::alleOblFelt(), ["mobilnummer", "poststed"]);
+    $felter = Medlem::alleFelt();
 
     if($medlemId == null){
+        // For hvert av feltene hentet fra Medlem-klassen lages en variabel, som enten holder det som er sendt inn (praktisk hvis noe er feil), eller en tom verdi.
         foreach ($felter as $key){
             ${$key} = $_POST[$key] ?? '';
         }
         $roller = $_POST['rolle'] ?? array();
 
+        // Her settes noen standard-verdier
         if($kontigentstatus == ""){ $kontigentstatus = "IKKE_BETALT"; }
         if($medlemStart == ""){ $medlemStart = (new DateTime())->format('Y-m-d'); }
     }
     else {
+        // Her hentes dataen på medlemmet som skal bli redigert.
         $redigerMedlem = Medlem::hentMedlem($db, $medlemId);
 
         foreach ($felter as $felt){
@@ -114,7 +137,7 @@ function skrivMedlemsForm($medlemId = null){
 
     ?>
 
-    <form method="post" action="<?=explode('?', $_SERVER['REQUEST_URI'])[0];?>" id="nyttMedlemForm" class="m-auto p-3 row" style="box-shadow: #fff2 0 0 6px 3px;">
+    <form method="post" action="<?=explode('?', $_SERVER['HTTP_REFERER'] ?? $_SERVER['REQUEST_URI'])[0];?>" id="nyttMedlemForm" class="m-auto p-3 row" style="box-shadow: #fff2 0 0 6px 3px;">
         <h4><?=$medlemId == null?"Nytt medlem":"Rediger medlem";?></h4>
 
         <div class="col-md-6">
