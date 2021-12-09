@@ -2,6 +2,8 @@
 
 require_once "init.inc.php";
 
+//emptyInputs() tar imot et ubegrenset anntall argumenter som skal sjekkes.
+//Returnerer true om det er noen inputs som er tomme.
 function emptyInputs(...$inputs):bool {
     $toReturn = false;
     foreach ($inputs as $input) {
@@ -12,11 +14,7 @@ function emptyInputs(...$inputs):bool {
     return $toReturn;
 }
 
-function invalidEmail(string $email):bool {
-    return !filter_var($email, FILTER_VALIDATE_EMAIL);
-}
-
-function getBrukerByEmail(string $email) {
+function getBrukerByEmail(string $email):array|false {
     global $db;
 
     if($db == null){
@@ -34,6 +32,12 @@ function getBrukerByEmail(string $email) {
     }
 }
 
+//invalidEmail() returnerer true om email addressen ikke er gyldig
+function invalidEmail(string $email):bool {
+    return !filter_var($email, FILTER_VALIDATE_EMAIL);
+}
+
+//loginUser() tar imot login info for å logge inn bruker å opprette session.
 function loginUser(string $email, string $passord):bool {
     global $db;
 
@@ -41,12 +45,16 @@ function loginUser(string $email, string $passord):bool {
         $db = database();
     }
 
+    //Henter bruker om den eksisterer
     $bruker = getBrukerByEmail($email);
 
+    //Om brukeren eksisterer
     if ($bruker) {
         $hashedPwdFraDB = $bruker['passord'];
 
-        if ((password_verify($passord, $hashedPwdFraDB))) {
+        //Validerer om passordet stemmer med det hashet passordet som ligger i databasen
+        if (password_verify($passord, $hashedPwdFraDB)) {
+            //Starter da en session, og setter session attributter
             session_start();
             $_SESSION['brukerId'] = $bruker['brukerId'];
             $_SESSION['brukerEpost'] = $bruker['epost'];
@@ -59,6 +67,7 @@ function loginUser(string $email, string $passord):bool {
     return false;
 }
 
+//isLoggedIn() skjekker om det er en logget inn bruker
 function isLoggedIn():bool {
     global $db, $_SESSION;
 
@@ -81,6 +90,7 @@ function isLoggedIn():bool {
 
 }
 
+//reDirectIfNotLoggedIn() redirecter til login siden om bruker ikke er logget inn.
 function reDirectIfNotLoggedIn() {
     if (!isLoggedIn()) {
         header("location: login.php?error=notLoggedIn");
@@ -88,12 +98,15 @@ function reDirectIfNotLoggedIn() {
     }
 }
 
+//logOutBruker() logger ut bruker
 function logOutBruker() {
+    //Starter ved å sette session cookien til å være utløpt
     $params = session_get_cookie_params();
     setcookie(session_name(), '', time() - 42000,
         $params["path"], $params["domain"],
         $params["secure"], $params["httponly"]
     );
 
+    //Ødelegger sessionen til slutt.
     session_destroy();
 }

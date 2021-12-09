@@ -37,6 +37,7 @@
         $meny["Hjem"] = "/";
         $meny["Medlemmer"] = "/medlemmer.php";
         $meny["Aktiviteter"] = "/aktiviteter.php";
+        $meny[""] = "/mail.php";
 
         echo "<nav class='navbar navbar-expand-md navbar-dark bg-primary mb-3'>
     <div class='container-md '>
@@ -55,7 +56,7 @@
 
             echo "<li class='nav-item'><a class='nav-link";
             if("/".$side == $link){ echo " active' aria-current='page"; }
-            echo "' href='$root$link'>$tekst</a></li>";
+            echo ($link == "/mail.php") ? "' href='$root$link'><img width='17px' src='img/mail.svg' alt='mail'> $tekst</a></li>" : "' href='$root$link'>$tekst</a></li>";
         }
         echo "
             </ul>

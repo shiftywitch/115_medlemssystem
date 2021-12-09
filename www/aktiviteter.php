@@ -8,10 +8,15 @@ require_once "assets/inc/init.inc.php";
     $db = database();
     $err = [];
 
+    //Logikk for å gå gjennom dataen fra post requesten
     if (isset($_POST['submit'])) {
+        //Skjekker om alle inputs er fullt ut.
         if (emptyInputs($_POST['aktivitet'], $_POST['beskrivelse'], $_POST['start'], $_POST['slutt'], $_POST['ansvarlig'])) {
             $err[] = "Fyll ut alle felt";
+        } elseif (strtotime($_POST['start']) > strtotime($_POST['slutt'])) {
+            $err[] = "Startdato kan ikke være etter sluttdato";
         } else {
+            //Bruker prepared statement for å sette inn ny aktivitet.
             $sql = "INSERT INTO Aktivitet VALUES (NULL, ?, ?, ?, ?, ?)";
             $stmt = $db->prepare($sql);
             $stmt->bind_param("ssiss",
@@ -30,27 +35,16 @@ require_once "assets/inc/init.inc.php";
 
     htmlHeader("Aktiviteter");
 ?>
-<div class="container-md">
-    <table class="table table-dark table-striped mb-5">
-        <tr>
-            <th>Navn</th>
-            <th>Start</th>
-            <th>Slutt</th>
-        </tr>
-        <?php
-        //Ved å sette WHERE start >= CURRENT_DATE så forsikrer vi
-        //oss å bare få tilbake de aktiviteter vi vill ha.
-        $sql = "SELECT * FROM Aktivitet WHERE start >= CURRENT_DATE";
-        $result = $db->query($sql);
-        while ($row = $result->fetch_assoc()) {
-            echo "\t\t\t\t<td>{$row['navn']}</td>\n";
-            echo "\t\t\t\t<td>{$row['start']}</td>\n";
-            echo "\t\t\t\t<td>{$row['slutt']}</td>\n";
-            echo "\t\t\t</tr>\n";
-        }
-        ?>
-    </table>
+    <!-- Printer ut feil om det er noen -->
+    <?php
+    if (!empty($err)) {
+        foreach ($err as $error) {echo "<p class='alert alert-danger w-25'>$error</p>";}
+    }
+    ?>
+    <br />
+    <div class="container-md">
 
+    <!-- Form for å opprette ny aktivitet/kurs -->
     <form method="post" class="m-auto w-50 p-3" style="box-shadow: #fff2 0 0 6px 3px;">
         <h4>Ny aktivitet</h4>
         <div class="mb-3 row">
@@ -79,6 +73,7 @@ require_once "assets/inc/init.inc.php";
             <label for="ansvarlig" class="col-sm-3 col-form-label">Ansvarlig</label>
             <div class="col-sm-9">
                 <select name="ansvarlig" id="ansvarlig" class="form-select">
+                    <!-- Henter ut alle medlemmer har rollen Kursansvarlig -->
                     <?php
                     $sql = "
                         SELECT m.medlemId, fornavn, etternavn 
@@ -88,6 +83,7 @@ require_once "assets/inc/init.inc.php";
                     ";
                     $result = $db->query($sql);
                     echo "\n";
+                    //Så lenge det er resultater igjen så printes det ut en <option> med medlemId som value.
                     while ($row = $result->fetch_assoc()) {
                         echo "\t\t\t<option value='{$row['medlemId']}'>{$row['fornavn']} {$row['etternavn']}</option>\n";
                     }
@@ -101,11 +97,29 @@ require_once "assets/inc/init.inc.php";
         </div>
     </form>
 
-    <?php
-    if (!empty($err)) {
-        foreach ($err as $error) {echo "<p>$error</p>";}
-    }
-    ?>
+    <br />
+    <br />
+
+    <!-- Table som viser en oversikt over aktiviteter -->
+    <table class="table table-dark table-striped mb-5">
+        <tr>
+            <th>Navn</th>
+            <th>Start</th>
+            <th>Slutt</th>
+        </tr>
+        <?php
+        //Ved å sette WHERE start >= CURRENT_DATE så forsikrer vi
+        //oss å bare få tilbake de aktiviteter vi vill ha.
+        $sql = "SELECT * FROM Aktivitet WHERE start >= CURRENT_DATE";
+        $result = $db->query($sql);
+        while ($row = $result->fetch_assoc()) {
+            echo "\t\t\t\t<td>{$row['navn']}</td>\n";
+            echo "\t\t\t\t<td>{$row['start']}</td>\n";
+            echo "\t\t\t\t<td>{$row['slutt']}</td>\n";
+            echo "\t\t\t</tr>\n";
+        }
+        ?>
+    </table>
 </div>
 <?php
 htmlFooter();
