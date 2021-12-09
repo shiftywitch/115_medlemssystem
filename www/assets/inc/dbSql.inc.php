@@ -17,6 +17,7 @@ function dbSetupSQL($email = "johbirk00@gmail.com", $pass = "password"):array {
                 etternavn VARCHAR(40) NOT NULL,
                 adresse VARCHAR(40) NOT NULL,
                 postnummer INT(4) NOT NULL,
+                mobilnummer varchar(12),
                 epost VARCHAR(100) NOT NULL UNIQUE,
                 dob DATE NOT NULL,
                 kjoenn ENUM('M', 'F', 'O') NOT NULL,
@@ -96,10 +97,10 @@ function dbSetupSQL($email = "johbirk00@gmail.com", $pass = "password"):array {
 
     $queries['insertMedlemData'] = "
             INSERT INTO Medlem VALUES
-            (NULL, 'Johannes',  'Birkeland',    'Teian 6',      4462, 'johannesbi@uia.no',  '2000-11-19', 'M', 'BETALT', '2019-11-11'), 
-            (NULL, 'Per',       'Persen',       'Per Gaten',    4462, 'perper@uia.no',      '2000-11-19', 'O', 'BETALT', '2019-11-11'), 
-            (NULL, 'Lina',      'Ridley',       'En gate i krs',4614, 'linaridley@uia.no',  '2002-07-26', 'F', 'BETALT', '2019-11-11'),
-            (NULL, 'Jorunn',    'Surdal',       'Bodlestad',    4462, 'jsb@gmail.com',      '1952-01-07', 'F', DEFAULT,  '2015-11-11');
+            (NULL, 'Johannes',  'Birkeland',    'Teian 6',      4462, '12345678', 'johannesbi@uia.no',  '2000-11-19', 'M', 'BETALT', '2019-11-11'), 
+            (NULL, 'Per',       'Persen',       'Per Gaten',    4462, '81549300', 'perper@uia.no',      '2000-11-19', 'O', 'BETALT', '2019-11-11'), 
+            (NULL, 'Lina',      'Ridley',       'En gate i krs',4614, '56781234', 'linaridley@uia.no',  '2002-07-26', 'F', 'BETALT', '2019-11-11'),
+            (NULL, 'Jorunn',    'Surdal',       'Bodlestad',    4462, '87654321', 'jsb@gmail.com',      '1952-01-07', 'F', DEFAULT,  '2015-11-11');
         ";
 
     $queries['insertInteresseRegister'] = "
