@@ -3,11 +3,14 @@ require_once "assets/inc/html.inc.php";
 require_once "assets/inc/functions.inc.php";
 require_once "assets/inc/init.inc.php";
 require_once "assets/lib/medlem.class.php";
+require_once "assets/lib/HtmlForm.class.php";
 require_once "assets/api/api.medlemHandler.php";
+require_once "assets/api/api.medlemManager.php";
 
 reDirectIfNotLoggedIn();
 $db = database();
-$err = [];
+$err = $err ?? [];
+$msg = $msg ?? [];
 htmlHeader("Medlemmer");
 ?>
 <script>
@@ -50,7 +53,75 @@ htmlHeader("Medlemmer");
             medlemmerMedFilter();
         }
     }
+
+    function hentPoststed(postnummer){
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "assets/api/api.postnummer.php?postnummer=" + postnummer)
+        xhr.send();
+
+        xhr.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                if(this.responseText !== ""){
+                    let json = JSON.parse(this.responseText)
+                    document.getElementById("poststed").value = json[0];
+                }
+            }
+            else {
+                console.log(this);
+            }
+        }
+    }
 </script>
+
+<div class="container-md mb-4">
+    <div class="text-center">
+        <button role="button" class="btn btn-primary text-center mb-3" onclick="$('#leggTilMedlemForm').slideToggle()">Legg til et medlem...</button>
+    </div>
+
+    <?php
+    if (!empty($err)) {
+        foreach ($err as $error) {echo "<p class='alert alert-danger'>$error</p>";}
+    }
+    if (!empty($msg)) {
+        foreach ($msg as $message) {echo "<p class='alert alert-success'>$message</p>";}
+    }
+    ?>
+
+    <div class="p-2" id="leggTilMedlemForm" style="<?=(!isset($_POST['nyttMedlem']) && !isset($_GET['medlemid'])?'display: none;':'');?>">
+        <?php
+        skrivMedlemsForm($_GET['medlemid'] ?? null);
+        ?>
+    </div>
+</div>
+
+<script>
+    let postnummerTimer;
+    let postStedEdited = false;
+    document.getElementById('poststed').addEventListener('keyup', ev => {
+        postStedEdited = ev.target.value.length > 0;
+    });
+
+    let postnummerVal = document.getElementById("postnummer").value;
+    postNummerEdit = ev => {
+        let postnummer = ev.target.value;
+        console.log(ev);
+        if(!postStedEdited && postnummer.length > 2 && postnummer !== postnummerVal){
+            clearTimeout(postnummerTimer);
+
+            postnummerVal = postnummer;
+            document.getElementById("poststed").value = "";
+            document.getElementById("poststed").placeholder = ""
+
+            postnummerTimer = setTimeout(()=>{
+                hentPoststed(postnummer);
+            }, 500);
+        }
+    }
+
+    document.getElementById('postnummer').addEventListener('keyup', postNummerEdit);
+    document.getElementById('postnummer').addEventListener('change', postNummerEdit);
+</script>
+
 <div class="container">
 
     <div class="mb-3 row m-auto">

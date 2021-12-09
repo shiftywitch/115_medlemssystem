@@ -84,8 +84,8 @@ function dbSetupSQL($email = "johbirk00@gmail.com", $pass = "password"):array {
     ";
 
     $queries['insertPostnummerData'] = "
-            INSERT INTO Postnummer VALUES (4462, 'Hovsherad'),
-                                          (4614, 'Kristiansand'); 
+            INSERT INTO Postnummer VALUES (4462, 'HOVSHERAD'),
+                                          (4614, 'KRISTIANSAND S'); 
         ";
 
     $queries['inserInteresse'] = "
@@ -116,7 +116,6 @@ function dbSetupSQL($email = "johbirk00@gmail.com", $pass = "password"):array {
             INSERT INTO Aktivitet VALUES (NULL, 'Kino', 'Kinodag i kristiansand woho', 1, '2020-07-07 19:00', '2020-07-07 21:00'),
                                          (NULL, 'Tur', 'Tur til kina', 1, '2021-12-07 19:00', '2021-07-07 21:00'),
                                          (NULL, 'Turnering', 'Fotball Turnering', 1, '2022-07-07 19:00', '2022-07-07 21:00');
-                                         
         ";
 
     $password = password_hash($pass, PASSWORD_DEFAULT);
