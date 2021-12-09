@@ -65,6 +65,7 @@ htmlHeader("Login");
                 </div>
                 <button type="submit" name="submit" class="btn btn-primary w-100">Log in</button>
             </form>
+            <p class="mt-2">Hvis du ikke har satt opp databasen<br> enda kan du gjøre <a href="assets/util/setup.php">det her</a>.</p>
         </div>
 
     </div>
