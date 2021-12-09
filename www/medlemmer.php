@@ -3,7 +3,7 @@ require_once "assets/inc/html.inc.php";
 require_once "assets/inc/functions.inc.php";
 require_once "assets/inc/init.inc.php";
 require_once "assets/lib/medlem.class.php";
-require_once "assets/inc/medlemHandler.inc.php";
+require_once "assets/api/api.medlemHandler.php";
 
 reDirectIfNotLoggedIn();
 $db = database();
@@ -26,7 +26,7 @@ htmlHeader("Medlemmer");
                 document.getElementById("medlemmer").innerHTML = this.responseText;
             }
         }
-        xhr.open("GET", "assets/inc/medlemHandler.inc.php?rolle=" + rolle + "&&kjoenn=" + kjoennParam
+        xhr.open("GET", "assets/api/api.medlemHandler.php?rolle=" + rolle + "&&kjoenn=" + kjoennParam
             + "&&status="+status + "&&medlemSiden="+medlemSiden)
         xhr.send();
     }
@@ -90,7 +90,8 @@ htmlHeader("Medlemmer");
     </div>
 
     <div id="medlemmer"><?php skrivUtMedlemmer(Medlem::hentAlleMedlemmer($db));?></div>
-
 </div>
+
+
 <?php
     htmlFooter();
